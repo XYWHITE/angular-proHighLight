@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.min.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="proHighLight.js"></script>
+    <link rel="stylesheet" type="text/css" href="highLight.css">
+    <script>
+        angular.module("app", ["proHighLight"])
+            .config(function ($sceProvider) {
+                $sceProvider.enabled(false);
+            })
+            .controller("ctrl", function ($scope, $http) {
+                $http.get("index.html").then(function (data) {
+                    $scope.html = data.data;
+                });
+            });
+    </script>
+</head>
+<body ng-app="app">
+<a></a>
+<div ng-controller="ctrl">
+    <p>angularJS想要实现搜索内容高亮相对容易，但是要注意xss攻击的问题，这里解决了此问题而且默认可以不区分大小写。以本身代码作为搜索内容为例。</p>
+    <input type="text" ng-model="search">
+    <strong>caseSensitive?</strong><input type="checkbox" ng-model="caseSensitive">
+    <h5 ng-bind-html="html|proHighLight:search:caseSensitive|parseBlankSymbol"></h5>
+</div>
+</body>
+</html>
